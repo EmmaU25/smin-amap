@@ -1,9 +1,9 @@
-import React from 'react';
+  import React from 'react';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
 import sampleVeggies from '../sample-veggies';
-
+import Veggie from './Veggie'
 class App extends React.Component {
   constructor() {
     super();
@@ -38,9 +38,21 @@ class App extends React.Component {
     return (
       <div className="amap">
         <div className="menu">
+
+        
           <Header tagline="Des bons legumes" />
+          <ul className="list-of-veggies">
+            { Object
+                .keys(this.state.veggies).map( key => <Veggie key = {key} details={this.state.veggies[key]}/>) 
+            }
+          </ul>
         </div>
+
+        
         <Order />
+
+
+       
         <Inventory addVeggie={this.addVeggie} loadSamples={this.loadSamples} />
       </div>
     )
