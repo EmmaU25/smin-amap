@@ -1,15 +1,18 @@
-  import React from 'react';
+import React from 'react';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
 import sampleVeggies from '../sample-veggies';
 import Veggie from './Veggie'
+
 class App extends React.Component {
+
   constructor() {
     super();
 
     this.addVeggie = this.addVeggie.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
+    this.add_order = this.add_order.bind(this);
 
     this.state = {
       veggies: {},
@@ -34,6 +37,11 @@ class App extends React.Component {
     });
   }
 
+
+  add_order(key, veggie){
+    console.log("JDHDH");
+  }
+
   render() {
     return (
       <div className="amap">
@@ -43,16 +51,14 @@ class App extends React.Component {
           <Header tagline="Des bons legumes" />
           <ul className="list-of-veggies">
             { Object
-                .keys(this.state.veggies).map( key => <Veggie key = {key} details={this.state.veggies[key]}/>) 
+                .keys(this.state.veggies).map( key => <Veggie key={key} add_order={this.add_order} details={this.state.veggies[key]}/>) 
             }
           </ul>
         </div>
 
         
         <Order />
-
-
-       
+ 
         <Inventory addVeggie={this.addVeggie} loadSamples={this.loadSamples} />
       </div>
     )

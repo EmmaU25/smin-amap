@@ -5,7 +5,7 @@ class Veggie extends React.Component{
 
 	veggie_en_stock(){
 		if(this.props.details.status == "available"){
-			return <button onClick={(e)=>this.props.add_order(this.props.index,this.props.details)}>"Ajouter au panier"</button>
+			return <button onClick={(e) => this.props.add_order( this.props.index,this.props.details )}>"Ajouter au panier"</button>
 		}else{
 			return <button disabled='true'>"pas plus en stock"</button>
 		}
