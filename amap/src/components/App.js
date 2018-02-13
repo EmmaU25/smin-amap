@@ -53,12 +53,12 @@ class App extends React.Component {
     var total = this.state.total *1;
     total += 1*1;
     this.setState({total});
+
     const order = {...this.state.order};
     order[ `${key}`] = veggie;
     this.setState({order});
-
-
-    var total_price = this.state.total_price*1;
+    var total_price = this.state.total_price;
+    total_price += veggie.price * 1;
     this.setState({total_price})
     this.incrementVeggie( key );
     
@@ -67,13 +67,14 @@ class App extends React.Component {
 
   delete_order(index, veggie){
     var total  = this.state.total*1;
-    total = this.veggieEnOrder(index)*1;
+    total -= this.veggieEnOrder(index)*1;
     this.setState({total});
 
     const order = {...this.state.order};
     delete order[`${index}`];
     this.setState({order});
 
+    console.log(this.total);
     var total_price = this.state.total_price*1;
     total_price -= veggie.price*1*this.veggieEnOrder(index)*1;
     this.setState({total_price})
@@ -96,13 +97,13 @@ class App extends React.Component {
           <Header tagline="Des bons legumes" />
           <ul className="list-of-veggies">
             { Object
-                .keys(this.state.veggies).map( key => <Veggie key={key} add_order={this.add_order} details={this.state.veggies[key]}/>) 
+                .keys(this.state.veggies).map( key => <Veggie key={key} index={key} add_order={this.add_order} details={this.state.veggies[key]}/>) 
             }
           </ul>
         </div>
 
         
-        <Order delete_order = {this.delete_order} state={this.state} veggieEnOrder={this.veggieEnOrder} />
+        <Order  total_price={this.state.total_price} delete_order = {this.delete_order} state={this.state} veggieEnOrder={this.veggieEnOrder} />
  
         <Inventory addVeggie={this.addVeggie} loadSamples={this.loadSamples} />
       </div>
