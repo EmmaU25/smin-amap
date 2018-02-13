@@ -65,6 +65,13 @@ class App extends React.Component {
 
   }
 
+
+  removeVeggieEnState( key ){
+    if(key in this.state.compteur){
+      delete this.state.compteur[`${key}`];
+    }
+  }
+
   delete_order(index, veggie){
     var total  = this.state.total*1;
     total -= this.veggieEnOrder(index)*1;
@@ -78,6 +85,8 @@ class App extends React.Component {
     var total_price = this.state.total_price*1;
     total_price -= veggie.price*1*this.veggieEnOrder(index)*1;
     this.setState({total_price})
+
+    this.removeVeggieEnState(index);
   }
 
   incrementVeggie( key ){
@@ -88,6 +97,49 @@ class App extends React.Component {
     }
   }
 
+
+  //LocalStorage
+
+ 
+  //fonction pour preparer a chaque mise a jour
+  componentWillUpdate(nextProps, nextState){
+    localStorage.setItem('order', JSON.stringify(nextState.order));
+    localStorage.setItem('total_price', JSON.stringify(nextState.total_price));
+    localStorage.setItem('compteur',JSON.stringify(nextState.compteur));
+    localStorage.setItem('total', JSON.stringify(nextState.compteur));
+    localStorage.setItem('props', JSON.stringify(nextProps));
+  }
+
+  //fonction ejecute avant de faire render
+  componentWillMount(){
+    localStorage.getItem('order') && this.setState({
+      order: JSON.parse(localStorage.getItem('order'))
+    });
+
+
+    localStorage.getItem('total_price') && this.setState({
+      total_price: JSON.parse(localStorage.getItem('total_price'))
+    });
+
+    localStorage.getItem('compteur') && this.setState({
+      compteur: JSON.parse(localStorage.getItem('compteur'))
+    });
+
+    localStorage.getItem('total') && this.setState({
+      total: JSON.parse(localStorage.getItem('total'))
+    });
+  }
+
+ //Fonction qui se demarre au moment de quitter l'app
+  componentWillUnmount(){
+    localStorage.setItem('order', JSON.stringify(this.state.order));
+    localStorage.setItem('total_price', JSON.stringify(this.state.total_price));
+    localStorage.setItem('compteur', JSON.stringify(this.state.compteur));
+    localStorage.setItem('total', JSON.stringify(this.state.total));
+
+  }
+
+
   render() {
     return (
       <div className="amap">
@@ -97,7 +149,8 @@ class App extends React.Component {
           <Header tagline="Des bons legumes" />
           <ul className="list-of-veggies">
             { Object
-                .keys(this.state.veggies).map( key => <Veggie key={key} index={key} add_order={this.add_order} details={this.state.veggies[key]}/>) 
+                .keys(this.state.veggies)
+                .map( key => <Veggie key={key} index={key} add_order={this.add_order} details={this.state.veggies[key]}/>) 
             }
           </ul>
         </div>
